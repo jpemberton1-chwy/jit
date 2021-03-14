@@ -18,6 +18,7 @@ func TestStart(t *testing.T) {
 				panic("can't get user home")
 			}
 			os.Mkdir(fmt.Sprintf("%s/.jit", dir), 0600)
+			os.Create(fmt.Sprintf("%s/.jit/starttime", dir))
 		})
 
 		g.AfterEach(func() {
