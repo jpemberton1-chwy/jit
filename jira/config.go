@@ -5,5 +5,5 @@ type JiraConfig struct {
 }
 
 func ConfigureApp() JiraConfig {
-	//
+	return JiraConfig{}
 }
