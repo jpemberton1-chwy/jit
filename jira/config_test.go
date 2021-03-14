@@ -1,32 +1,27 @@
 package jira_test
 
 import (
-	"encoding/base64"
-	"os"
 	"testing"
 
+	. "github.com/franela/goblin"
 	"github.com/jpemberton1-chwy/jit/jira"
 )
 
-func TestCreateShouldCreateJiraConfig(t *testing.T) {
-	expected := base64.StdEncoding.EncodeToString([]byte("jpemberton1@chewy.com:1234"))
-	config := jira.Create("jpemberton1@chewy.com", "1234")
-	if config.Auth != expected {
-		t.Error("failed to create JiraConfig with expected auth string")
-	}
-}
+func TestConfig(t *testing.T) {
+	g := Goblin(t)
+	g.Describe("config", func() {
+		g.Describe("load", func() {
+			g.Describe("when configuration exists", func() {
+				g.BeforeEach(func() {
+					jira.Save(jira.Create("jpemberton1@example.com", "1234"))
+				})
 
-func TestSaveShouldSaveJitrcFile(t *testing.T) {
-	jira.Save(jira.Create("jpemberton1@chewy.com", "1234"))
-	_, err := os.OpenFile("/Users/jpemberton1/.jitrc", os.O_RDONLY, 0000)
-	if err != nil {
-		t.Error("did not create .jitrc")
-	}
-}
-
-func TestLoadShouldLoadJitrcFile(t *testing.T) {
-	config := jira.Load()
-	if config.Auth == "" {
-		t.Error("failed to load .jitrc")
-	}
+				g.It("should load .jitrc", func() {
+					config, err := jira.Load()
+					g.Assert(err).IsNil()
+					g.Assert(config.Auth).Equal("anBlbWJlcnRvbjFAZXhhbXBsZS5jb206MTIzNA==")
+				})
+			})
+		})
+	})
 }
