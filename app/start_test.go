@@ -17,7 +17,7 @@ func TestStart(t *testing.T) {
 			if err != nil {
 				panic("can't get user home")
 			}
-			os.MkdirAll(fmt.Sprintf("%s/.jit", dir), 0600)
+			os.Mkdir(fmt.Sprintf("%s/.jit", dir), 0600)
 		})
 
 		g.AfterEach(func() {
