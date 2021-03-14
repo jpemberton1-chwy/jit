@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 )
 
@@ -13,18 +12,26 @@ type JiraConfig struct {
 	Auth string
 }
 
-func Load() JiraConfig {
-	file, err := os.Open("/Users/jpemberton1/.jitrc")
+func Load() (res JiraConfig, err error) {
+	dir, err := os.UserHomeDir()
 	if err != nil {
-		log.Fatal(err)
+		return JiraConfig{}, err
 	}
-	bytes, err := ioutil.ReadAll(file)
+
+	jitrc, err := os.Open(fmt.Sprintf("%s/.jitrc", dir))
 	if err != nil {
-		log.Fatal(err)
+		return JiraConfig{}, err
 	}
+	defer jitrc.Close()
+
+	bytes, err := ioutil.ReadAll(jitrc)
+	if err != nil {
+		return JiraConfig{}, err
+	}
+
 	var jc JiraConfig
 	json.Unmarshal(bytes, &jc)
-	return jc
+	return jc, nil
 }
 
 func Create(username string, apiKey string) JiraConfig {
@@ -34,16 +41,24 @@ func Create(username string, apiKey string) JiraConfig {
 	}
 }
 
-func Save(config JiraConfig) {
-	file, err := os.OpenFile("/Users/jpemberton1/.jitrc", os.O_CREATE|os.O_RDWR, 0700)
+func Save(config JiraConfig) (success bool, err error) {
+	dir, err := os.UserHomeDir()
 	if err != nil {
-		file.Close()
-		log.Fatal(err)
+		return false, err
 	}
+
+	file, err := os.OpenFile(fmt.Sprintf("%s/.jitrc", dir), os.O_CREATE|os.O_RDWR, 0600)
+	if err != nil {
+		return false, err
+	}
+	defer file.Close()
+
 	json, err := json.Marshal(config)
 	if err != nil {
-		file.Close()
-		log.Fatal(err)
+		return false, err
 	}
+
 	file.Write(json)
+
+	return true, nil
 }
