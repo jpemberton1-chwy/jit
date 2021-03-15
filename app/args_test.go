@@ -8,7 +8,7 @@ import (
 
 func Test(t *testing.T) {
 	g := Goblin(t)
-	g.Describe("ParseArgs", func() {
+	g.Describe("args", func() {
 		g.It("should parse log subcommand", func() {
 			args, _ := ParseArgs([]string{"log"})
 			g.Assert(args.Subcommand).Equal("log")
