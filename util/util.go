@@ -38,14 +38,14 @@ func OpenUserFile(filename string) (result *os.File, err error) {
 	return result, nil
 }
 
-// func FileExists(filename string) bool {
-// 	file, err := os.Open(filename)
-// 	if err != nil {
-// 		return false
-// 	}
-// 	defer file.Close()
-// 	return true
-// }
+func FileExists(filename string) bool {
+	file, err := os.Open(filename)
+	if err != nil {
+		return false
+	}
+	defer file.Close()
+	return true
+}
 
 func DeleteTimerFile() error {
 	return os.Remove(GetUserFilePath(".jit/timer"))

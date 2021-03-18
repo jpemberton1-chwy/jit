@@ -2,6 +2,7 @@ package timer
 
 import (
 	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -20,10 +21,15 @@ func TestTimer(t *testing.T) {
 	g.Describe("timer", func() {
 		g.Describe("Start", func() {
 			g.BeforeEach(func() {
+				os.Mkdir(util.GetUserFilePath(".jit"), 0755)
 				util.DeleteTimerFile()
 				// if err != nil {
 				// 	panic(fmt.Sprintf("can't remove file %s", util.GetUserFilePath(".jit/timer")))
 				// }
+			})
+
+			g.AfterEach(func() {
+				os.Remove(util.GetUserFilePath(".jit"))
 			})
 
 			g.It("should create a timer file", func() {
