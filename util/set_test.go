@@ -18,7 +18,7 @@ func TestSet(t *testing.T) {
 	g.Describe("set", func() {
 		g.It("should create a new set", func() {
 			s := NewSet()
-			Expect(reflect.TypeOf(s).String()).To(Equal("*util.set"))
+			Expect(reflect.TypeOf(s).String()).To(Equal("*util.Set"))
 		})
 
 		g.Describe("Add", func() {
