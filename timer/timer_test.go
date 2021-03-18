@@ -1,7 +1,6 @@
 package timer
 
 import (
-	"fmt"
 	"io/ioutil"
 	"testing"
 	"time"
@@ -21,10 +20,10 @@ func TestTimer(t *testing.T) {
 	g.Describe("timer", func() {
 		g.Describe("Start", func() {
 			g.BeforeEach(func() {
-				err := util.DeleteTimerFile()
-				if err != nil {
-					panic(fmt.Sprintf("can't remove file %s", util.GetUserFilePath(".jit/timer")))
-				}
+				util.DeleteTimerFile()
+				// if err != nil {
+				// 	panic(fmt.Sprintf("can't remove file %s", util.GetUserFilePath(".jit/timer")))
+				// }
 			})
 
 			g.It("should create a timer file", func() {
@@ -40,7 +39,7 @@ func TestTimer(t *testing.T) {
 				Expect(err).ShouldNot(HaveOccurred())
 				content, err := ioutil.ReadAll(file)
 				Expect(err).ShouldNot(HaveOccurred())
-				Expect(string(content[:])).To(Equal("2020-12-25 6:25:20"))
+				Expect(string(content[:])).To(Equal("2020-12-25 06:25:20"))
 			})
 
 			g.Describe("if timer has already been started", func() {

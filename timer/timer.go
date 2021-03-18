@@ -10,7 +10,7 @@ import (
 )
 
 func Start(startTime time.Time) (success bool, err error) {
-	file, err := os.OpenFile(util.GetUserFilePath(".jit/timer"), os.O_CREATE|os.O_EXCL, 0600)
+	file, err := os.OpenFile(util.GetUserFilePath(".jit/timer"), os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 	if err != nil {
 		return false, err
 	}
